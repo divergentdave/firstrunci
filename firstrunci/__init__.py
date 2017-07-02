@@ -26,6 +26,7 @@ class Configuration(object):
     def parse(self, path):
         doc = yaml.load(open(path))
         self.name = doc["name"]
+        self.vagrant = vagrant.Vagrant(root=self.name)
         self.url = doc["git"]["url"]
         self.head = doc["git"]["head"]
         self.has_submodules = doc["git"].get("recursive", False)
@@ -102,13 +103,14 @@ class Configuration(object):
                                       "{!r}".format(snippet))
 
     def vagrant_up(self):
-        pass  # TODO
+        self.vagrant.up()
 
     def run_scripts(self):
-        pass  # TODO
+        for script in self.scripts:
+            self.vagrant.ssh(command=script)
 
     def vagrant_destroy(self):
-        pass  # TODO
+        self.vagrant.destroy()
 
 
 def main():
