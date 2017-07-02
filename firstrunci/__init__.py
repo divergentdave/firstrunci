@@ -84,7 +84,9 @@ class Configuration(object):
                 exclude_f.close()
             vagrant_path = os.path.join(self.name, "Vagrantfile")
             vagrant_f = open(vagrant_path, "w")
-            vagrant_f.write("TODO")
+            vagrant_f.write("Vagrant.configure(\"2\") do |config|\n"
+                            "  config.vm.box = \"base\"\n"
+                            "end\n")
             vagrant_f.close()
 
     def check_docs(self):
