@@ -22,6 +22,7 @@ class Configuration(object):
         self.docs = None
         self.snippets = None
         self.scripts = None
+        self.box = None
 
     def parse(self, path):
         doc = yaml.load(open(path))
@@ -45,6 +46,7 @@ class Configuration(object):
             if isinstance(scripts, six.string_types):
                 scripts = [scripts]
             self.scripts.extend(scripts)
+        self.box = doc["vagrant"]["box"]
 
     def run(self, destroy=True):
         self.get_source()
@@ -86,8 +88,8 @@ class Configuration(object):
             vagrant_path = os.path.join(self.name, "Vagrantfile")
             vagrant_f = open(vagrant_path, "w")
             vagrant_f.write("Vagrant.configure(\"2\") do |config|\n"
-                            "  config.vm.box = \"base\"\n"
-                            "end\n")
+                            "  config.vm.box = \"{}\"\n"
+                            "end\n".format(self.box))
             vagrant_f.close()
 
     def check_docs(self):
