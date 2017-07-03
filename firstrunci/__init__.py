@@ -119,6 +119,9 @@ def main():
     try:
         configs = []
         destroy = True
+        if len(sys.argv[1:]) == 0:
+            print("Usage: {} config.yaml [...]".format(sys.argv[0]))
+            sys.exit(1)
         for arg in sys.argv[1:]:
             if arg == "--no-destroy":
                 destroy = False
