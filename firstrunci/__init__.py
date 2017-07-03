@@ -23,11 +23,13 @@ class Configuration(object):
         self.snippets = None
         self.scripts = None
         self.box = None
+        self.directory = None
 
     def parse(self, path):
         doc = yaml.load(open(path))
         self.name = doc["name"]
-        self.vagrant = vagrant.Vagrant(root=self.name)
+        self.directory = os.path.join(os.path.dirname(path), self.name)
+        self.vagrant = vagrant.Vagrant(root=self.directory)
         self.url = doc["git"]["url"]
         self.head = doc["git"]["head"]
         self.has_submodules = doc["git"].get("recursive", False)
@@ -60,14 +62,14 @@ class Configuration(object):
                 self.vagrant_destroy()
 
     def get_source(self):
-        if os.path.isdir(self.name):
+        if os.path.isdir(self.directory):
             args = ["git", "pull", "origin", self.head]
             if self.has_submodules:
                 args.append("--recurse-submodules=on-demand")
-            subprocess.check_call(args, cwd=self.name)
+            subprocess.check_call(args, cwd=self.directory)
         else:
             args = ["git", "clone", self.url, "--branch", self.head,
-                    self.name]
+                    self.directory]
             if self.has_submodules:
                 args.append("--recursive")
             subprocess.check_call(args)
@@ -75,9 +77,9 @@ class Configuration(object):
     def ensure_vagrantfile(self):
         output = subprocess.check_output(["git", "ls-files", "--",
                                           "Vagrantfiles"],
-                                         cwd=self.name)
+                                         cwd=self.directory)
         if len(output) == 0:
-            exclude_path = os.path.join(self.name, ".git/info/exclude")
+            exclude_path = os.path.join(self.directory, ".git/info/exclude")
             exclude_f = open(exclude_path, "r")
             exclude_lines = exclude_f.readlines()
             exclude_f.close()
@@ -85,7 +87,7 @@ class Configuration(object):
                 exclude_f = open(exclude_path, "a")
                 exclude_f.write("\n/Vagrantfile\n")
                 exclude_f.close()
-            vagrant_path = os.path.join(self.name, "Vagrantfile")
+            vagrant_path = os.path.join(self.directory, "Vagrantfile")
             vagrant_f = open(vagrant_path, "w")
             vagrant_f.write("Vagrant.configure(\"2\") do |config|\n"
                             "  config.vm.box = \"{}\"\n"
@@ -93,7 +95,8 @@ class Configuration(object):
             vagrant_f.close()
 
     def check_docs(self):
-        doc_contents = [open(os.path.join(self.name, doc_path), "r").read()
+        doc_contents = [open(os.path.join(self.directory, doc_path), "r")
+                        .read()
                         for doc_path in self.docs]
         for snippet in self.snippets:
             for text in doc_contents:
