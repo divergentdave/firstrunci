@@ -116,7 +116,7 @@ class Configuration(object):
 
     def run_scripts(self):
         for script in self.scripts:
-            self.vagrant.ssh(command=script)
+            self.vagrant.ssh(command="cd /vagrant && {}".format(script))
 
     def vagrant_destroy(self):
         self.vagrant.destroy()
