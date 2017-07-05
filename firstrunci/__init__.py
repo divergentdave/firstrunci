@@ -116,7 +116,13 @@ class Configuration(object):
 
     def run_scripts(self):
         for script in self.scripts:
-            self.vagrant.ssh(command="cd /vagrant && {}".format(script))
+            print("$ {}".format(script))
+            try:
+                command = "cd /vagrant && {}".format(script)
+                print(self.vagrant.ssh(command=command))
+            except subprocess.CalledProcessError as e:
+                print(e.output)
+                raise
 
     def vagrant_destroy(self):
         self.vagrant.destroy()
