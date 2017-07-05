@@ -67,6 +67,8 @@ class Configuration(object):
 
     def get_source(self):
         if os.path.isdir(self.directory):
+            subprocess.check_call(["git", "clean", "-dfx"], cwd=self.directory)
+
             args = ["git", "pull", "origin", self.head]
             if self.has_submodules:
                 args.append("--recurse-submodules=on-demand")
