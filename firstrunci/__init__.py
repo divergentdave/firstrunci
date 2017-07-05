@@ -132,6 +132,7 @@ def main():
         for arg in sys.argv[1:]:
             if arg == "--no-destroy":
                 destroy = False
+                continue
             if not os.path.isfile(arg):
                 raise FirstRunCIError("File {} does not exist".format(arg))
             config = Configuration()
