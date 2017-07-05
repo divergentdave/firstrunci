@@ -56,6 +56,8 @@ class Configuration(object):
         self.get_source()
         self.ensure_vagrantfile()
         self.check_docs()
+        if self.vagrant.status()[0].state != "not created":
+            self.vagrant_destroy()
         self.vagrant_up()
         try:
             self.run_scripts()
