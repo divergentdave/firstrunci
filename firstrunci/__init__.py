@@ -29,7 +29,9 @@ class Configuration(object):
         doc = yaml.load(open(path))
         self.name = doc["name"]
         self.directory = os.path.join(os.path.dirname(path), self.name)
-        self.vagrant = vagrant.Vagrant(root=self.directory)
+        self.vagrant = vagrant.Vagrant(root=self.directory,
+                                       quiet_stdout=False,
+                                       quiet_stderr=False)
         self.url = doc["git"]["url"]
         self.head = doc["git"]["head"]
         self.has_submodules = doc["git"].get("recursive", False)
