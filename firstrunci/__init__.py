@@ -67,7 +67,9 @@ class Configuration(object):
 
     def get_source(self):
         if os.path.isdir(self.directory):
-            subprocess.check_call(["git", "clean", "-dfx"], cwd=self.directory)
+            subprocess.check_call(["git", "clean", "-dfx",
+                                   "--exclude=Vagrantfile",
+                                   "--exclude=.vagrant"], cwd=self.directory)
 
             args = ["git", "pull", "origin", self.head]
             if self.has_submodules:
