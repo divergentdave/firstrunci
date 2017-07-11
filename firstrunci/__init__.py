@@ -102,6 +102,10 @@ class Configuration(object):
                 exclude_f = open(exclude_path, "a")
                 exclude_f.write("\n/Vagrantfile\n")
                 exclude_f.close()
+            if "/.vagrant\n" not in exclude_lines:
+                exclude_f = open(exclude_path, "a")
+                exclude_f.write("\n/.vagrant\n")
+                exclude_f.close()
             vagrant_path = os.path.join(self.directory, "Vagrantfile")
             vagrant_f = open(vagrant_path, "w")
             vagrant_f.write("Vagrant.configure(\"2\") do |config|\n"
