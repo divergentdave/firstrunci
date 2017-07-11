@@ -4,9 +4,13 @@ import os
 import subprocess
 import sys
 
+import dotenv
 import six
 import vagrant
 import yaml
+
+
+dotenv.load_dotenv(".env")
 
 
 class FirstRunCIError(Exception):
@@ -47,9 +51,12 @@ class Configuration(object):
                 texts = [texts]
             self.snippets.extend(texts)
             scripts = step.get("script", [])
-            if isinstance(scripts, six.string_types):
+            if not isinstance(scripts, type([])):
                 scripts = [scripts]
-            self.scripts.extend(scripts)
+            for script in scripts:
+                if isinstance(script, type({})):
+                    script = script["format"].format_map(os.environ)
+                self.scripts.append(script)
         self.box = doc["vagrant"]["box"]
 
     def run(self, destroy=True):

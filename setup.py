@@ -9,8 +9,9 @@ setup(
     author_email="divergentdave@gmail.com",
     packages=["firstrunci"],
     install_requires=[
-        "pyyaml",
+        "python-dotenv",
         "python-vagrant",
+        "pyyaml",
         "six",
     ],
     entry_points={
