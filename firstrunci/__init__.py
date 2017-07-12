@@ -57,7 +57,10 @@ class Configuration(object):
                 if isinstance(script, type({})):
                     script = script["format"].format_map(os.environ)
                 self.scripts.append(script)
-        self.box = doc["vagrant"]["box"]
+        if doc.get("vagrant") is not None:
+            self.box = doc["vagrant"].get("box")
+        else:
+            self.box = None
 
     def run(self, destroy=True):
         self.get_source()
