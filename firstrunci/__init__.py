@@ -94,7 +94,7 @@ class Configuration(object):
 
     def ensure_vagrantfile(self):
         output = subprocess.check_output(["git", "ls-files", "--",
-                                          "Vagrantfiles"],
+                                          "Vagrantfile"],
                                          cwd=self.directory)
         if len(output) == 0:
             exclude_path = os.path.join(self.directory, ".git/info/exclude")
