@@ -24,7 +24,7 @@ firstrunci oversight.garden.yaml openelections.yaml
 
 By default, all Vagrant VMs will be cleaned up after testing is complete. If you would like to override this and keep the VMs for further inspection, pass `--no-destroy` as a command line argument.
 
-The projects will be cloned in directories next to the configuration files. On subsequent runs, `git clean -dfx` will be run in the directory, so do not store any unsaved work there.
+Each project will be cloned in a directory next to its configuration file. On subsequent runs, `git clean -dfx` will be run in the directory, so do not store any unsaved work there.
 
 The [divergentdave/firstrunci-config](https://github.com/divergentdave/firstrunci-config) repository contains several ready-made configuration files. (and is open for more)
 
