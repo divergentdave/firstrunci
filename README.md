@@ -1,6 +1,6 @@
 # firstrunci
 
-`firstrunci automates the testing of developer-facing installation instructions.
+`firstrunci` automates the testing of developer-facing installation instructions.
 
 ## Overview
 
